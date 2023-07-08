@@ -3,7 +3,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Scanner;
 
-class MD5 {
+class SHA {
     public static void main(String[] args) throws Exception {
         File f = new File("input.txt");
         Scanner sc = new Scanner(f);
@@ -12,21 +12,20 @@ class MD5 {
             msg += sc.nextLine() + " ";
         sc.close();
         System.out.println(msg);
-        System.out.println("Hashed: " + getMD5(msg));
+        System.out.println("Hashed: " + getSHA(msg));
     }
 
-    public static String getMD5(String msg) {
+    public static String getSHA(String msg) {
         String ans = "";
-        MessageDigest md;
         try {
-            md = MessageDigest.getInstance("md5");
-            byte[] byte_value = md.digest(msg.getBytes());
-            BigInteger num = new BigInteger(1, byte_value);
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] arr = md.digest(msg.getBytes());
+            BigInteger num = new BigInteger(1, arr);
             ans = num.toString(16);
-            while (ans.length() < 32)
-                ans = '0' + ans;
-            return ans;
+            while (ans.length() < 40)
+                ans = "0" + ans;
         } catch (Exception e) {
+            System.out.println(e);
         }
         return ans;
     }

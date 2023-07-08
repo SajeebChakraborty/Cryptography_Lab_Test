@@ -64,11 +64,12 @@ public class Polygram {
 
     public static void main(String[] args) {
         // Define the substitution map
-        Map<String, String> substitutionMap = new HashMap<>();
-        substitutionMap.put("Ab", "xY");
-        substitutionMap.put("CD", "ZR");
-        substitutionMap.put("EF", "LO");
-        substitutionMap.put("GH", "PN");
+        // Map<String, String> substitutionMap = new HashMap<>();
+        Map<String, String> substitutionMap = dictionary("dictionary.txt");
+        // substitutionMap.put("Ab", "xY");
+        // substitutionMap.put("CD", "ZR");
+        // substitutionMap.put("EF", "LO");
+        // substitutionMap.put("GH", "PN");
         // Create the polygram substitution cipher object
         Polygram cipher = new Polygram(substitutionMap);
 
@@ -79,7 +80,33 @@ public class Polygram {
         writeFile("./Chipertext.txt", result);
         result = cipher.decrypt(result);
         writeFile("./RecoverFile.txt", result);
+        /*
+         * Scanner scanner=new Scanner(System.in);
+         * String str_number=scanner.nextLine();
+         * int number = scanner.nextInt();
+         * scanner.close();
+         */
 
+    }
+
+    public static Map<String, String> dictionary(String fileName) {
+
+        String line;
+        Map<String, String> keyWiseValue = new HashMap<>();
+        try (BufferedReader bf = new BufferedReader(new FileReader(fileName))) {
+            int line_number = 1;
+            String index = null;
+            while ((line = bf.readLine()) != null) {
+                if (line_number % 2 == 0) {
+                    keyWiseValue.put(index, line);
+                }
+                index = line;
+                line_number++;
+            }
+        } catch (IOException e) {
+            System.out.println("FILE NOT FOUND");
+        }
+        return keyWiseValue;
     }
 
     public static String readFile(String filename) {
